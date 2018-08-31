@@ -1,3 +1,8 @@
+/**
+ * @author D-Team viva
+ * @date   2018/08/31
+ */
+
 /** 位移系数 */
 type TiledRatio = {
     /** 水平 */ x: number
