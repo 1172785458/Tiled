@@ -4,6 +4,11 @@ import { TiledAni, TiledData, TiledMap, TiledSpr } from "./TiledType";
 /** 图块图层 */
 export default class TiledLayer extends Laya.Sprite {
 
+    /**
+     * @author D-Team viva
+     * @date   2018/08/31
+     */
+
     /** 画布宽高 */
     private readonly WIDTH: number = Laya.stage.designWidth;
     private readonly HEIGHT: number = Laya.stage.designHeight;
