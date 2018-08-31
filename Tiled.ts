@@ -4,6 +4,11 @@ import TiledLayer from "./TiledLayer";
 /** 图块 */
 export default class Tiled {
 
+    /**
+     * @author D-Team viva
+     * @date   2018/08/31
+     */
+
     /** 缓存资源分组标签 */
     static readonly RES_GROUP: string = 'tiledresgroup';
 
