@@ -1,5 +1,5 @@
-import Tiled from "./Tiled";
 import { TiledAni, TiledData, TiledMap, TiledSpr } from "./TiledType";
+import Tiled from "./Tiled";
 
 /** 图块图层 */
 export default class TiledLayer extends Laya.Sprite {
@@ -59,6 +59,8 @@ export default class TiledLayer extends Laya.Sprite {
      */
     reset(data: TiledData, redraw: boolean = false): void {
         this._tiledata = data;
+        this.zOrder = data.zOder;
+        this.updateZOrder();
         if (redraw) {
             let rect = this._viewrect;
             this.draw(rect.x, rect.y);
@@ -77,36 +79,6 @@ export default class TiledLayer extends Laya.Sprite {
         if (y !== undefined) rect.y = Math.floor(y * ratio.y);
         if (width !== undefined) rect.width = width;
         if (height !== undefined) rect.height = height;
-    }
-
-    /** 获取图块当前帧 */
-    getIndex(tiled: TiledMap): number {
-        return (tiled.index + tiled.frame) % tiled.total;
-    }
-
-    /** 获取图块文件路径 */
-    getUrl(tiled: TiledMap): string {
-        let idx = this.getIndex(tiled);
-        return tiled.urls[idx];
-    }
-    /** 通过索引获取图块文件路径 */
-    getUrlByIndex(index: number): string {
-        return this.getUrl(this._tiledata.tiled[index]);
-    }
-
-    /** 获取图块资源纹理 */
-    getTexture(tiled: TiledMap, callback: (tex: Laya.Texture) => void): void {
-        let url = this.getUrl(tiled);
-        let tex: Laya.Texture = Laya.loader.getRes(url);
-        if (tex) {
-            callback(tex);
-        } else {
-            Laya.loader.load(url, Laya.Handler.create(this, callback), undefined, Laya.Loader.IMAGE, 1, true, Tiled.RES_GROUP, false);
-        }
-    }
-    /** 通过索引获取图块资源纹理 */
-    getTextureByIndex(index: number, callback: (tex: Laya.Texture) => void): void {
-        this.getTexture(this._tiledata.tiled[index], callback);
     }
 
     /** 动画播放处理
@@ -137,6 +109,36 @@ export default class TiledLayer extends Laya.Sprite {
         this.drawMap(_column, _columnMax, _line, _lineMax, _offsetX, _offsetY);
         this.drawAni(x, y, _width, _height);
         this.drawSpr(x, y);
+    }
+
+    /** 获取图块当前帧 */
+    private getIndex(tiled: TiledMap): number {
+        return (tiled.index + tiled.frame) % tiled.total;
+    }
+
+    /** 获取图块文件路径 */
+    private getUrl(tiled: TiledMap): string {
+        let idx = this.getIndex(tiled);
+        return tiled.urls[idx];
+    }
+    /** 通过索引获取图块文件路径 */
+    private getUrlByIndex(index: number): string {
+        return this.getUrl(this._tiledata.tiled[index]);
+    }
+
+    /** 获取图块资源纹理 */
+    private getTexture(tiled: TiledMap, callback: (tex: Laya.Texture) => void): void {
+        let url = this.getUrl(tiled);
+        let tex: Laya.Texture = Laya.loader.getRes(url);
+        if (tex) {
+            callback(tex);
+        } else {
+            Laya.loader.load(url, Laya.Handler.create(this, callback), undefined, Laya.Loader.IMAGE, 1, true, Tiled.TILED_RES_GROUP, false);
+        }
+    }
+    /** 通过索引获取图块资源纹理 */
+    private getTextureByIndex(index: number, callback: (tex: Laya.Texture) => void): void {
+        this.getTexture(this._tiledata.tiled[index], callback);
     }
 
     /** 绘制图块 */
