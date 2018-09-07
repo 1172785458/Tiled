@@ -27,13 +27,13 @@ type TiledMap = {
 /** 自定义动作处理 */
 type Action = {
     /** 标识符 */ type: string
-    /** 参数集 */[key: string]: any
+    /** 参数集 */ [code: string]: any
 }
 
 /** 通过draw绘制的动画图块 */
 type TiledAni = {
-    /** 图块序号 */  idx: number
-    /** 处理动作 */  action?: Action[]
+    /** 图块序号 */ idx: number
+    /** 处理动作 */ action?: Action[]
 } & TiledRatio
 
 /** 通过addChild添加到图层的动画对象 */
@@ -48,8 +48,9 @@ type TiledSpr = {
     /** 混合模式 */ blend: boolean
 } & TiledAni
 
-/** 图层图块数据 */
+/** 图层配置数据 */
 type TiledData = {
+    /** 图层景深 */ zOder: number
     /** 位移系数 */ ratio: TiledRatio
     /** 图块宽高 */ size: TiledSize
     /** 图块配置 */ tiled: TiledMap[]
@@ -58,4 +59,9 @@ type TiledData = {
     /** 动画对象 */ animation: TiledSpr[]
 }
 
-export { TiledRatio, TiledSize, TiledMap, Action, TiledAni, TiledSpr, TiledData }
+/** 图层列表数据 */
+type TiledJson = {
+    /** 图层配置数据 */ [layerName: string]: TiledData;
+}
+
+export { TiledRatio, TiledSize, TiledMap, Action, TiledAni, TiledSpr, TiledData, TiledJson }
